@@ -6,9 +6,12 @@
 #    By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/07 03:30:27 by mcesar-d          #+#    #+#              #
-#    Updated: 2023/08/08 02:18:13 by mcesar-d         ###   ########.fr        #
+#    Updated: 2023/08/08 20:04:52 by mcesar-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+# Set the default target.
+.DEFAULT_GOAL := all
 
 # Set the Docker Compose file.
 COMPOSE := srcs/docker-compose.yml
