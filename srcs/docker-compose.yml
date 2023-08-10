@@ -46,7 +46,7 @@ services:
     networks:
       - inception
     ports:
-      -"443-443"
+      - ['443-443']
     volumes:
       - wordpress:/var/www/html
     depends_on:
