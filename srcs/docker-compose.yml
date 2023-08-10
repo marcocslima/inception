@@ -9,6 +9,7 @@ services:
         - WORDPRESS_DATABASE
         - WORDPRESS_USER
         - WORDPRESS_PASSWORD
+        - ROOT_PASSWORD
     networks:
       - inception
     volumes:
