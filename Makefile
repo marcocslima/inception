@@ -6,7 +6,7 @@
 #    By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/07 03:30:27 by mcesar-d          #+#    #+#              #
-#    Updated: 2023/08/08 20:04:52 by mcesar-d         ###   ########.fr        #
+#    Updated: 2023/08/10 03:19:16 by mcesar-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ ENV_FILE := srcs/.env
 VOLUMES_PATH := /home/mcesar-d/data
 
 # Set the login name
-LOGIN := mcesar-data
+LOGIN := mcesar-d
 
 # Define the 'all' target.
 all: add_host_entry
