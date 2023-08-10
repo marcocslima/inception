@@ -6,7 +6,7 @@
 #    By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/07 03:30:27 by mcesar-d          #+#    #+#              #
-#    Updated: 2023/08/10 03:24:46 by mcesar-d         ###   ########.fr        #
+#    Updated: 2023/08/10 03:32:52 by mcesar-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,9 +35,9 @@ all: add_host_entry
 add_host_entry:
 	@ if ! grep -q "${LOGIN}.42.fr" /etc/hosts; then \
 		echo "127.0.0.1 ${LOGIN}.42.fr" | sudo tee --append /etc/hosts; \
-		echo "The entry was add in file /etc/hosts."; \
+		echo "The entry was added in file /etc/hosts."; \
 	else \
-		echo "There is entry alredy in file /etc/hosts."; \
+		echo "There is already an entry in file /etc/hosts."; \
 	fi
 
 # Define the 'down' target.
