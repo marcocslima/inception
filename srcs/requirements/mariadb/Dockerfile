@@ -7,7 +7,7 @@ RUN apt-get update \
     nano \
     && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /var/lib/mysql /var/run/mysql \
+RUN mkdir -p /var/lib/mysql /var/run/mysqld \
     && chown -R mysql:mysql /var/lib/mysql /var/run/mysqld \
     && chmod 777 /var/run/mysqld /run/mysqld
 

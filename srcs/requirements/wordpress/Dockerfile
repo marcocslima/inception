@@ -1,30 +1,35 @@
 FROM debian:bullseye
 
-ARG WORDPRESS_DATABASE
-ARG WORDPRESS_USER
-ARG WORDPRESS_PASSWORD
+RUN apt-get update && apt-get install -y \
+    gettext \
+    php7.4 php7.4-fpm php7.4-cli \
+    wget curl procps \
+    php7.4-curl php7.4-mysql php7.4-mbstring php7.4-xml php7.4-gd \
+    sendmail mariadb-client gettext-base \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/list/* \
+    && mkdir /run/php
 
-WORKDIR /var/www/html/
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+        --output-document=/usr/local/bin/wp \
+        && chmod +x /usr/local/bin/wp
 
-RUN apt update -y && apt upgrade -y && apt install -y \
-    php-fpm php-mysql mariadb-client -y wget
+RUN mkdir -p /run/php /var/www/html/wordpress \
+    && chmod -R 755 /var/www/html/
 
-RUN sed -i.default "/^listen\s=.*/c\listen = 0.0.0.0:9000" \
-    /etc/php/[0-9]*.[0-9]*/fpm/pool.d/www.conf
+COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
+RUN chmod 755 /etc/php/7.4/fpm/pool.d/www.conf
 
-RUN wget https://wordpress.org/latest.tar.gz && \
-    tar -xzf latest.tar.gz && \
-    mv wordpress/* . && \
-    rm -rf wordpress && \
-    rm -rf latest.tar.gz
+WORKDIR /var/www/html/wordpress
 
-RUN cp wp-config-sample.php wp-config.php && \
-    sed -i "s/database_name_here/$WORDPRESS_DATABASE/g" wp-config.php && \
-    sed -i "s/username_here/$WORDPRESS_USER/g" wp-config.php && \
-    sed -i "s/password_here/$WORDPRESS_PASSWORD/g" wp-config.php && \
-    sed -i "s/localhost/mariadb/g" wp-config.php
+RUN wp core download --allow-root
 
-RUN mkdir -p /run/php
-RUN ln -s $(find /usr/sbin -name 'php-fpm*') /usr/bin/php-fpm
+COPY tools/script.sh /usr/local/bin/
 
-CMD ["php-fpm", "-F"]
+RUN chmod +x /usr/local/bin/script.sh
+
+ENTRYPOINT [ "script.sh" ]
+
+EXPOSE 9000
+
+CMD ["/usr/sbin/php-fpm7.4", "-F", "-R"]

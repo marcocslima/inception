@@ -42,11 +42,11 @@ services:
     restart: always
     build:
       context: requirements/nginx
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     networks:
       - inception
     ports:
-      - ['443-443']
+      - 443
     volumes:
       - wordpress:/var/www/html
     depends_on:
@@ -54,21 +54,16 @@ services:
 
 volumes:
   mariadb:
-    driver: local
     driver_opts:
+      o: bind
       type: none
       device: /home/mcesar-d/data/mariadb
-      o: bind
-    name: mariadb
-
   wordpress:
-    driver: local
     driver_opts:
+      o: bind
       type: none
       device: /home/mcesar-d/data/wordpress
-    name: wordpress
 
 networks:
   inception:
     name: inception
-    driver: bridge
