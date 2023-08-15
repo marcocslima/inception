@@ -15,7 +15,8 @@ while ! mysqladmin ping -hlocalhost --silent; do
 done
 
 # Verify is there database already
-if ! mysql -e "USE $WORDPRESS_DATABASE;" > /dev/null 2>&1; then
+if ! mysql -e "USE $WORDPRESS_DATABASE;";
+then
     # Create database and user
     mysql -e "CREATE DATABASE $WORDPRESS_DATABASE;"
     mysql -e "CREATE USER '$WORDPRESS_USER'@'%' IDENTIFIED BY '$WORDPRESS_PASSWORD';"
