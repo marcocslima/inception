@@ -2,7 +2,7 @@
 
 # Verify enviroment vaiables
 if [ -z "$MYSQL_ROOT_PASSWORD" ] || [ -z "$WORDPRESS_DATABASE" ] || [ -z "$WORDPRESS_USER" ] || [ -z "$WORDPRESS_PASSWORD" ]; then
-    echo "Erro: As variáveis de ambiente não estão definidas corretamente."
+    echo "Error: Some enviroment variables does not defined."
     exit 1
 fi
 
