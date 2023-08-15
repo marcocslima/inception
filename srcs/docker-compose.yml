@@ -41,6 +41,8 @@ services:
       - inception
     ports:
       - 443:443
+    env_file:
+      - .env
     volumes:
       - wordpress:/var/www/html
     depends_on:
