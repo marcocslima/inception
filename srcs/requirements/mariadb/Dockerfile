@@ -11,7 +11,6 @@ COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/
 RUN chmod 644 /etc/mysql/mariadb.conf.d/50-server.cnf
 RUN chown -R mysql:mysql /var/lib/mysql
 
-COPY ./conf/dump.sql /tmp/dump.sql
 COPY ./tools/init.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/init.sh
