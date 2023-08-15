@@ -1,25 +1,21 @@
 FROM debian:bullseye
 
-RUN apt-get update \
-    && apt-get install -y \
-    mariadb-server \
-    mariadb-client \
-    nano \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt update -y && apt upgrade -y && apt install \
+    mariadb-server -y \
+    nano
 
-RUN mkdir -p /var/lib/mysql /var/run/mysqld \
-    && chown -R mysql:mysql /var/lib/mysql /var/run/mysqld \
-    && chmod 777 /var/run/mysqld /run/mysqld
+RUN rm /etc/mysql/mariadb.conf.d/50-server.cnf
 
-EXPOSE 3306
+COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/
 
-COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d
-COPY ./tools/init.sh /usr/local/bin/init.sh
+RUN chmod 644 /etc/mysql/mariadb.conf.d/50-server.cnf
+RUN chown -R mysql:mysql /var/lib/mysql
+
+COPY ./conf/dump.sql /tmp/dump.sql
+COPY ./tools/init.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/init.sh
 
 ENTRYPOINT ["init.sh"]
 
-WORKDIR /usr
-
-CMD ["mysqld_safe", "--datadir=/var/lib/mysql"]
+CMD ["/usr/bin/mysqld_safe"]

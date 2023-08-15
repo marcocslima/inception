@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
     wget curl procps \
     php7.4-curl php7.4-mysql php7.4-mbstring php7.4-xml php7.4-gd \
     sendmail mariadb-client gettext-base \
+    nano \
     && apt-get clean \
     && rm -rf /var/lib/apt/list/* \
     && mkdir /run/php
@@ -20,15 +21,15 @@ RUN mkdir -p /run/php /var/www/html/wordpress \
 COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 RUN chmod 755 /etc/php/7.4/fpm/pool.d/www.conf
 
-WORKDIR /var/www/html/wordpress
+WORKDIR /var/www/html/
 
 RUN wp core download --allow-root
 
-COPY tools/script.sh /usr/local/bin/
+COPY tools/init.sh /usr/local/bin/
 
-RUN chmod +x /usr/local/bin/script.sh
+RUN chmod +x /usr/local/bin/init.sh
 
-ENTRYPOINT [ "script.sh" ]
+ENTRYPOINT [ "init.sh" ]
 
 EXPOSE 9000
 

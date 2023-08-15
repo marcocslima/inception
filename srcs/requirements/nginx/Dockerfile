@@ -1,16 +1,23 @@
 FROM debian:bullseye
 
-RUN apt-get update \
-        && apt-get install -y \
-        nginx openssl
+RUN apt update -y && apt upgrade -y && apt install nginx -y \
+        && apt install nano -y && apt install curl -y
 
-COPY ./conf/nginx.conf /etc/nginx/sites-available/default
-COPY ./conf/nginx.conf /etc/nginx/sites-enabled/default
+RUN mkdir -p /etc/nginx/ssl
 
-RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-        -keyout /etc/ssl/private/nginx-selfsigned.key \
-        -out /etc/ssl/certs/nginx-selfsigned.crt \
-        -subj "/C=BR/ST=SP/L=SP/O=42sp/CN=mcesar-d.42.fr"
+RUN apt install openssl -y
+
+RUN openssl req -x509 -nodes \
+        -out /etc/nginx/ssl/inception.crt \
+        -keyout /etc/nginx/ssl/inception.key \
+        -subj "/C=BR/ST=SP/L=SP/O=42sp/CN=mcesar-d.42.fr/UID=mcesar-d"
+
+RUN mkdir -p /var/run/nginx
+
+COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+
+RUN chmod 755 /var/www/html
+RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 443
 

@@ -6,7 +6,7 @@
 #    By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/07 03:30:27 by mcesar-d          #+#    #+#              #
-#    Updated: 2023/08/10 21:38:58 by mcesar-d         ###   ########.fr        #
+#    Updated: 2023/08/15 12:06:52 by mcesar-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,11 +25,12 @@ assemble:
 down:
 	docker-compose --file=$(COMPOSE) down || true
 
+rb: down fclean all
+
 setup: $(ENV_FILE)
 	@sudo mkdir -p $(VOLUMES_PATH)/wordpress
 	@sudo mkdir -p $(VOLUMES_PATH)/mariadb
 	@sudo grep $(LOGIN).42.fr /etc/hosts || sudo bash -c 'echo "127.0.0.1 $(LOGIN).42.fr" >> /etc/hosts'
-	@grep VOLUMES_PATH srcs/.env || echo "VOLUMES_PATH=$(VOLUMES_PATH)" >> srcs/.env
 
 clean:
 	@rm -f srcs/.env || true

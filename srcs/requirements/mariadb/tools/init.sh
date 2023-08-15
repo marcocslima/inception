@@ -1,30 +1,39 @@
 #!/bin/bash
 
-if [! -d "/var/lib/mysql/$WORDPRESS_DATABASE"]
-then
-    mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+# Verify enviroment vaiables
+if [ -z "$MYSQL_ROOT_PASSWORD" ] || [ -z "$WORDPRESS_DATABASE" ] || [ -z "$WORDPRESS_USER" ] || [ -z "$WORDPRESS_PASSWORD" ]; then
+    echo "Erro: As variáveis de ambiente não estão definidas corretamente."
+    exit 1
 fi
 
-mysqld_safe --datadir=/var/lib/mysql &
-sleep 5
+# Start MariaDB server
+mysqld_safe --skip-syslog &
 
-mysql --user=root << _EOF_
-DELETE FROM mysql.user WHERE User='';
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
-ALTER USER 'root'@'localhost' IDENTIFIED BY '$ROOT_PASSWORD';
-FLUSH PRIVILEGES;
-_EOF_
+# Wait MariaDB server to be ready
+while ! mysqladmin ping -hlocalhost --silent; do
+    sleep 1
+done
 
-chown -R mysql:mysql /var/lib/mysql
+# Verify is there database already
+if ! mysql -e "USE $WORDPRESS_DATABASE;" > /dev/null 2>&1; then
+    # Create database and user
+    mysql -e "CREATE DATABASE $WORDPRESS_DATABASE;"
+    mysql -e "CREATE USER '$WORDPRESS_USER'@'%' IDENTIFIED BY '$WORDPRESS_PASSWORD';"
+    mysql -e "GRANT ALL PRIVILEGES ON $WORDPRESS_DATABASE.* TO '$WORDPRESS_USER'@'%';"
+    mysql -e "FLUSH PRIVILEGES;"
 
-mysql --user=root --password=$ROOT_PASSWORD << _EOF_
-CREATE DATABASE IF NOT EXISTS $WORDPRESS_DATABASE;
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$ROOT_PASSWORD';
-GRANT ALL PRIVILEGES ON $WORDPRESS_DATABASE.* TO '$WORDPRESS_USER'@'%' IDENTIFIED BY '$WORDPRESS_PASSWORD' WITH GRANT OPTION;
-FLUSH PRIVILEGES;
-_EOF_
+    echo "Database has been sucess created."
+else
+    echo "Database '$WORDPRESS_DATABASE' exists already."
+fi
 
-mysqladmin -uroot -p$ROOT_PASSWORD shutdown
+# Stop MariaDB server
+mysqladmin shutdown
 
-exec "$@"
+# Wait server complitely down
+while mysqladmin ping -hlocalhost --silent; do
+    sleep 1
+done
+
+# Start MariaDB server
+exec mysqld_safe
