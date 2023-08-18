@@ -18,4 +18,3 @@ RUN chmod +x /usr/local/bin/init.sh
 ENTRYPOINT ["init.sh"]
 
 CMD ["/usr/sbin/mariadbd"]
-#CMD ["/usr/bin/mysqld_safe"]
