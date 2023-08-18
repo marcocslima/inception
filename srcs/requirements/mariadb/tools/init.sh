@@ -38,3 +38,4 @@ done
 
 # Start MariaDB server
 exec mysqld_safe
+#exec mariadbd

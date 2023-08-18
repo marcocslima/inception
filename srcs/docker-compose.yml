@@ -24,7 +24,7 @@ services:
     env_file:
       - .env
     volumes:
-      - wordpress:/var/www/html
+      - wordpress:/var/www/html/wordpress
     networks:
       - inception
     depends_on:
@@ -44,7 +44,7 @@ services:
     env_file:
       - .env
     volumes:
-      - wordpress:/var/www/html
+      - wordpress:/var/www/html/wordpress
     depends_on:
       - wordpress
 
@@ -62,4 +62,5 @@ volumes:
 
 networks:
   inception:
-    external: true
+    name: "inception"
+    driver: bridge

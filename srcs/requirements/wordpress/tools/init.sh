@@ -1,14 +1,11 @@
 #!/bin/sh
 
-if [ -f ./wp-config.php ]
-then
-    echo "wordpress already ok"
-else
-    sed -i "s/username_here/$WORDPRESS_USER/g" wp-config-sample.php
-    sed -i "s/password_here/$WORDPRESS_PASSWORD/g" wp-config-sample.php
-    sed -i "s/localhost/$WORDPRESS_HOSTNAME/g" wp-config-sample.php
-    sed -i "s/database_name_here/$WORDPRESS_DATABASE/g" wp-config-sample.php
-    cp wp-config-sample.php wp-config.php
-fi
+rm -rf *.*
+
+wp core download --allow-root
+
+wp config create --allow-root --dbhost=$WORDPRESS_HOSTNAME --dbname=$WORDPRESS_DATABASE --dbuser=$WORDPRESS_USER --dbpass=$WORDPRESS_PASSWORD --locale=pt_BR
+
+wp core install --allow-root --url=$WP_URL --title="INCEPTION" --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASSWORD  --admin_email=$WP_ADMIN_EMAIL
 
 exec "$@"

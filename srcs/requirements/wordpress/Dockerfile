@@ -21,9 +21,9 @@ RUN mkdir -p /run/php /var/www/html/wordpress \
 COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 RUN chmod 755 /etc/php/7.4/fpm/pool.d/www.conf
 
-WORKDIR /var/www/html/
+WORKDIR /var/www/html/wordpress
 
-RUN wp core download --allow-root
+#RUN wp core download --allow-root
 
 COPY tools/init.sh /usr/local/bin/
 
