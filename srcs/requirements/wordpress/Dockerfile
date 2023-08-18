@@ -23,8 +23,6 @@ RUN chmod 755 /etc/php/7.4/fpm/pool.d/www.conf
 
 WORKDIR /var/www/html/wordpress
 
-#RUN wp core download --allow-root
-
 COPY tools/init.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/init.sh
