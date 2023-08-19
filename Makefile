@@ -6,7 +6,7 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/07 03:30:27 by mcesar-d          #+#    #+#              #
-#    Updated: 2023/08/19 08:46:42 by user42           ###   ########.fr        #
+#    Updated: 2023/08/19 09:41:54 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ VOLUMES_PATH :=/home/$(LOGIN)/data
 ENV_CONTENT := \
     WORDPRESS_DATABASE=wordpress_db\
     \nWORDPRESS_USER=wuser\
+	\nWORDPRESS_USER_EMAIL=mcl@studant.42sp.org.br\
     \nWORDPRESS_PASSWORD=wpass\
     \nMYSQL_ROOT_PASSWORD=rpass\
     \nWORDPRESS_HOSTNAME=mariadb\
@@ -27,10 +28,7 @@ ENV_CONTENT := \
     \nWP_ADMIN_USER=mcl\
     \nWP_ADMIN_PASSWORD=123\
     \nWP_ADMIN_EMAIL=$(LOGIN)@studant.42sp.org.br\
-    \nWP_URL=http://localhost\
-    \nWP_SUB_TITLE=sub\
-    \nWP_USER_EMAIL=$(LOGIN)@studant.42sp.org.br\
-    \nWP_EMAIL=mcl@gmail.com
+    \nWP_URL=http://localhost
 
 all: $(ENV_FILE)
 	@make env

@@ -10,8 +10,8 @@ else
     wp config create --allow-root \
                         --dbhost=$WORDPRESS_HOSTNAME \
                         --dbname=$WORDPRESS_DATABASE \
-                        --dbuser=$WORDPRESS_USER \
-                        --dbpass=$WORDPRESS_PASSWORD
+                        --dbuser=$WP_ADMIN_USER \
+                        --dbpass=$WP_ADMIN_PASSWORD
 
     wp config set --allow-root WP_HOME $DOMAIN_NAME
     wp config set --allow-root WP_SITEURL $DOMAIN_NAME
@@ -25,12 +25,15 @@ else
                         --skip-email
 fi
 
-wp option update blogdescription $WP_SUB_TITLE --allow-root
-wp plugin uninstall akismet hello --allow-root
-wp plugin install redis-cache --allow-root
-wp redis enable --all --allow-root
-wp redis activate --all --allow-root
+if !(wp user list --field=user_login --allow-root | grep $WORDPRESS_USER); then
+    wp user create --allow-root \
+        $WORDPRESS_USER \
+        $WORDPRESS_USER_EMAIL \
+        --role=author \
+        --user_pass=$WORDPRESS_PASSWORD
+fi
 
+wp plugin uninstall akismet hello --allow-root
 wp plugin update --all --allow-root
 
 chown -R www-data:www-data /var/www/html/*
