@@ -37,5 +37,5 @@ while mysqladmin ping -hlocalhost --silent; do
 done
 
 # Start MariaDB server
-exec mysqld_safe
-#exec mariadbd
+#exec mysqld_safe
+exec mariadbd

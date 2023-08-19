@@ -18,7 +18,7 @@ else
 
     wp core install --allow-root \
                         --url=$DOMAIN_NAME \
-                        --title="INCEPTION" \
+                        --title=$WP_TITLE \
                         --admin_user=$WP_ADMIN_USER \
                         --admin_password=$WP_ADMIN_PASSWORD \
                         --admin_email=$WP_ADMIN_EMAIL \
@@ -28,9 +28,10 @@ fi
 wp option update blogdescription $WP_SUB_TITLE --allow-root
 wp plugin uninstall akismet hello --allow-root
 wp plugin install redis-cache --allow-root
+wp redis enable --all --allow-root
+wp redis activate --all --allow-root
 
 wp plugin update --all --allow-root
-wp redis enable --all --allow-root
 
 chown -R www-data:www-data /var/www/html/*
 

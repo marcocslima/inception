@@ -4,6 +4,7 @@ services:
   mariadb:
     image: mariadb
     container_name: mariadb
+    restart: always
     build: 
       context: ./requirements/mariadb
     env_file:
@@ -18,6 +19,7 @@ services:
   wordpress:
     image: wordpress
     container_name: wordpress
+    restart: always
     build:
       context: ./requirements/wordpress
       dockerfile: Dockerfile
@@ -31,8 +33,8 @@ services:
       - mariadb
 
   nginx:
-    container_name: nginx
     image: nginx
+    container_name: nginx
     restart: always
     build:
       context: ./requirements/nginx
